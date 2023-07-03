@@ -37,7 +37,7 @@ const Navbar = () => {
         <h3 className="text-bold text-2xl hidden md:flex">Englishy</h3>
       </div>
       <div>
-        <SearchBar />
+        <SearchBar className="" />
       </div>
       <div className="flex gap-5">
         {session?.user ? (
