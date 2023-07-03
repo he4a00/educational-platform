@@ -27,7 +27,7 @@ const Course = ({ course }: CourseProps) => {
       ? DateFormatter.format(course.createdAt)
       : "";
   return (
-    <div className="flex gap-8 items-center shadow-[rgba(0,_0,_0,_0.24)_0px_3px_8px]">
+    <div className="flex flex-col md:flex-row gap-8 items-center shadow-[rgba(0,_0,_0,_0.24)_0px_3px_8px]">
       <div className="">
         <Image
           src={course?.image || ""}
