@@ -8,15 +8,13 @@ import { Facebook, Linkedin, Twitter } from "lucide-react";
 import { Skeleton } from "@/components/ui/ui/skeleton";
 
 interface CourseProps {
-  course: {
-    id: string;
-    title: string | null;
-    image: string | null;
-    category: string[];
-    describtion: string;
-    price: number;
-    createdAt: Date;
-  };
+  id: string;
+  title: string | null;
+  image: string | null;
+  category: string[];
+  describtion: string;
+  price: number;
+  createdAt: Date;
 }
 
 const CoursesList = () => {
@@ -54,7 +52,7 @@ const CoursesList = () => {
       <div className="flex flex-col gap-y-10">
         {coursesData &&
           coursesData.map((course: CourseProps) => (
-            <Course key={course.course?.id} course={course} />
+            <Course key={course?.id} course={course} />
           ))}
       </div>
     </div>
