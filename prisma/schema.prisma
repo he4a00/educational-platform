@@ -69,22 +69,20 @@ enum ProgressionStatus {
 
 model Course {
   id              String   @id @default(auto()) @map("_id") @db.ObjectId
-  userId          String   @db.ObjectId
+  userId          String?  @db.ObjectId
   title           String
   image           String
   price           Float?
-  description     String
-  category        Json
+  describtion     String
+  category        String[]
   createdAt       DateTime @default(now())
   updatedAt       DateTime @default(now())
   enrollmentCount Int      @default(0)
 
-  user         User           @relation(fields: [userId], references: [id], onDelete: Cascade)
+  user         User?          @relation(fields: [userId], references: [id], onDelete: Cascade)
   Lesson       Lesson[]
   Review       Review[]
   SavedCourses SavedCourses[]
-  Category     Category?      @relation(fields: [categoryId], references: [id])
-  categoryId   String?        @db.ObjectId
   UserProgress UserProgress[]
 }
 
@@ -123,13 +121,13 @@ model SavedCourses {
   user   User   @relation(fields: [userId], references: [id])
 }
 
-model Category {
-  id          String   @id @default(auto()) @map("_id") @db.ObjectId
-  name        String
-  description String
-  courseId    String   @unique @db.ObjectId
-  course      Course[]
-}
+// model Category {
+//   id          String   @id @default(auto()) @map("_id") @db.ObjectId
+//   name        String
+//   description String
+//   courseId    String   @unique @db.ObjectId
+//   course      Course[]
+// }
 
 model UserProgress {
   id       String            @id @default(auto()) @map("_id") @db.ObjectId

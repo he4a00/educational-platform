@@ -3,13 +3,14 @@ import GoogleProvider from "next-auth/providers/google";
 import { PrismaAdapter } from "@next-auth/prisma-adapter";
 import prisma from "../lib/db";
 import type { User } from "next-auth";
+import type { userType } from "@prisma/client";
 
 type UserId = string;
 
 declare module "next-auth/jwt" {
   interface JWT {
     id: UserId;
-    username?: string | null;
+    type: userType;
   }
 }
 
@@ -17,7 +18,7 @@ declare module "next-auth" {
   interface Session {
     user: User & {
       id: UserId;
-      username?: string | null;
+      type: userType;
     };
   }
 }
@@ -35,12 +36,12 @@ export const authOptions: NextAuthOptions = {
   ],
   callbacks: {
     async session({ session, token }) {
-
       if (token) {
         session.user.id = token.id;
         session.user.name = token.name;
         session.user.email = token.email;
         session.user.image = token.picture;
+        session.user.type = token.type;
       }
 
       return session;
@@ -54,6 +55,7 @@ export const authOptions: NextAuthOptions = {
 
       if (!dbUser) {
         token.id = user!.id;
+
         return token;
       }
 
@@ -62,6 +64,7 @@ export const authOptions: NextAuthOptions = {
         name: dbUser.name,
         email: dbUser.email,
         picture: dbUser.image,
+        type: dbUser.type,
       };
     },
     redirect() {
@@ -70,4 +73,5 @@ export const authOptions: NextAuthOptions = {
   },
 };
 
-export const getAuthSession = () => getServerSession(authOptions);
+export const getAuthSession = (options?: NextAuthOptions) =>
+  getServerSession(options || authOptions);

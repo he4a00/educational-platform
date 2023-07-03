@@ -1,7 +1,6 @@
-"use client";
-import { ChakraProvider } from "@chakra-ui/react";
 import AuthProvider from "./components/AuthProvider";
 import Navbar from "./components/Navbar";
+import QueryProvider from "./components/QueryProvider";
 import "./globals.css";
 import { Roboto } from "next/font/google";
 
@@ -23,14 +22,14 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={inter.className}>
-        <div className="container">
-          <AuthProvider>
-            <ChakraProvider>
+        <AuthProvider>
+          <QueryProvider>
+            <div>
               <Navbar />
               {children}
-            </ChakraProvider>
-          </AuthProvider>
-        </div>
+            </div>
+          </QueryProvider>
+        </AuthProvider>
       </body>
     </html>
   );
