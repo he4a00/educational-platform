@@ -38,7 +38,7 @@ const Login = () => {
           onClick={loginWithGoogle}
           disabled={isLoading}
         >
-          Sign In
+           Sign In
         </Button>
       </div>
     </div>

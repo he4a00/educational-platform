@@ -21,8 +21,13 @@ const Course = ({ course }: CourseProps) => {
     minute: "numeric",
     second: "numeric",
   });
+
+  const formattedCreatedAt =
+    course.createdAt instanceof Date
+      ? DateFormatter.format(course.createdAt)
+      : "";
   return (
-    <div className="flex items-center shadow-[rgba(0,_0,_0,_0.24)_0px_3px_8px]">
+    <div className="flex gap-8 items-center shadow-[rgba(0,_0,_0,_0.24)_0px_3px_8px]">
       <div className="">
         <Image
           src={course?.image || ""}
@@ -36,22 +41,22 @@ const Course = ({ course }: CourseProps) => {
           {course?.title}
         </h1>
         <p className="mb-4">{course?.describtion}</p>
-        {course?.category.map((cat, idx) => {
-          return (
-            <p className="text-gray-500 cursor-pointer" key={idx}>
-              {cat}
-            </p>
-          );
-        })}
+        <div className="flex gap-4">
+          {course?.category.map((cat, idx) => {
+            return (
+              <p key={idx} className="text-gray-500 cursor-pointer flex gap-4">
+                {cat}
+              </p>
+            );
+          })}
+        </div>
         <div className="flex gap-4 mt-4">
           <Button className="bg-blue-600">View</Button>
           <Button>Enroll</Button>
           <Button variant="outline">Review</Button>
         </div>
 
-        {/* <p className="text-gray-500">
-            {DateFormatter.format(course?.createdAt)}
-          </p> */}
+        <p className="text-gray-500">{formattedCreatedAt}</p>
       </div>
     </div>
   );
