@@ -4,13 +4,12 @@ import React from "react";
 interface ViewButtonProps {
   text: string;
   id: string;
-  disabled: boolean;
 }
 
-const ViewButton = ({ text, id, disabled }: ViewButtonProps) => {
+const ViewButton = ({ text, id }: ViewButtonProps) => {
   return (
     <Link href={`/course/${id}`}>
-      <Button disabled={disabled}>{text}</Button>
+      <Button>{text}</Button>
     </Link>
   );
 };

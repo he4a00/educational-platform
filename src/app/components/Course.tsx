@@ -56,13 +56,9 @@ const Course = ({ course, className }: CourseProps) => {
           })}
         </div>
         <div className="flex gap-4 mt-4">
-          <ViewButton
-            text="View"
-            id={course.id}
-            disabled={status === "unauthenticated"}
-          />
-          <Button disabled={status === "authenticated"}>Enroll</Button>
-          <Button disabled={status === "authenticated"} variant="outline">
+          <ViewButton text="View" id={course.id} />
+          <Button disabled={status === "unauthenticated"}>Enroll</Button>
+          <Button disabled={status === "unauthenticated"} variant="outline">
             Review
           </Button>
         </div>
