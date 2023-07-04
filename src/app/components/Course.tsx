@@ -1,7 +1,8 @@
 import { Button } from "@/components/ui/ui/button";
-import { Card } from "@/components/ui/ui/card";
+import { useSession } from "next-auth/react";
 import Image from "next/image";
 import React from "react";
+import ViewButton from "./ViewButton";
 
 interface CourseProps {
   course: {
@@ -13,9 +14,11 @@ interface CourseProps {
     price: number;
     createdAt: Date;
   };
+  className: string;
 }
 
-const Course = ({ course }: CourseProps) => {
+const Course = ({ course, className }: CourseProps) => {
+  const { status } = useSession();
   const DateFormatter = new Intl.DateTimeFormat(undefined, {
     hour: "numeric",
     minute: "numeric",
@@ -27,7 +30,9 @@ const Course = ({ course }: CourseProps) => {
       ? DateFormatter.format(course.createdAt)
       : "";
   return (
-    <div className="flex flex-col md:flex-row gap-8 items-center shadow-[rgba(0,_0,_0,_0.24)_0px_3px_8px]">
+    <div
+      className={`${className} flex flex-col md:flex-row gap-8 items-center shadow-[rgba(0,_0,_0,_0.24)_0px_3px_8px] rounded`}
+    >
       <div className="">
         <Image
           src={course?.image || ""}
@@ -42,7 +47,7 @@ const Course = ({ course }: CourseProps) => {
         </h1>
         <p className="mb-4">{course?.describtion}</p>
         <div className="flex gap-4">
-          {course?.category.map((cat, idx) => {
+          {course?.category?.map((cat, idx) => {
             return (
               <p key={idx} className="text-gray-500 cursor-pointer flex gap-4">
                 {cat}
@@ -51,11 +56,16 @@ const Course = ({ course }: CourseProps) => {
           })}
         </div>
         <div className="flex gap-4 mt-4">
-          <Button className="bg-blue-600">View</Button>
-          <Button>Enroll</Button>
-          <Button variant="outline">Review</Button>
+          <ViewButton
+            text="View"
+            id={course.id}
+            disabled={status === "unauthenticated"}
+          />
+          <Button disabled={status === "authenticated"}>Enroll</Button>
+          <Button disabled={status === "authenticated"} variant="outline">
+            Review
+          </Button>
         </div>
-
         <p className="text-gray-500">{formattedCreatedAt}</p>
       </div>
     </div>

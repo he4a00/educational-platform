@@ -18,7 +18,6 @@ interface CourseProps {
 }
 
 const CoursesList = () => {
-  //TODO: get the courses from the api using axios
   const { data: coursesData, isLoading } = useQuery({
     queryKey: ["courses"],
     queryFn: async () => {
@@ -50,9 +49,9 @@ const CoursesList = () => {
         </h1>
       </div>
       <div className="flex flex-col gap-y-10">
-        {coursesData &&
+        {Array.isArray(coursesData) &&
           coursesData.map((course: CourseProps) => (
-            <Course key={course?.id} course={course} />
+            <Course className="" key={course?.id} course={course} />
           ))}
       </div>
     </div>
