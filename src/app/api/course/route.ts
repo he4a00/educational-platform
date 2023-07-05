@@ -58,7 +58,12 @@ export async function POST(request: Request) {
 
 export async function GET() {
   try {
-    const courses = await prisma.course.findMany();
+    const courses = await prisma.course.findMany({
+      include: {
+        Lesson: true,
+        Review: true,
+      },
+    });
     return new NextResponse(JSON.stringify(courses), { status: 200 });
   } catch (error) {
     return new Response("Could not find any course", { status: 404 });

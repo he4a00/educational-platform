@@ -16,6 +16,7 @@ export async function GET(request: Request, { params }: ParamsProps) {
       },
       include: {
         Lesson: true,
+        Review: true,
       },
     });
     return new NextResponse(JSON.stringify(singleCourse), { status: 200 });

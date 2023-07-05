@@ -103,6 +103,8 @@ model Review {
   id        String   @id @default(auto()) @map("_id") @db.ObjectId
   courseId  String   @db.ObjectId
   userId    String   @db.ObjectId
+  username  String
+  userImage String
   content   String
   rating    Float
   createdAt DateTime @default(now())

@@ -1,3 +1,4 @@
+import { Toaster } from "@/components/ui/ui/toaster";
 import AuthProvider from "./components/AuthProvider";
 import Navbar from "./components/Navbar";
 import QueryProvider from "./components/QueryProvider";
@@ -24,10 +25,9 @@ export default function RootLayout({
       <body className={inter.className}>
         <AuthProvider>
           <QueryProvider>
-            <div>
-              <Navbar />
-              {children}
-            </div>
+            <Navbar />
+            <div>{children}</div>
+            <Toaster />
           </QueryProvider>
         </AuthProvider>
       </body>
