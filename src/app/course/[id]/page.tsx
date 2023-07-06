@@ -142,7 +142,6 @@ const CoursePage = () => {
                   <EnrollButton courseId={course.id} />
                   <ReviewButton
                     onClick={handleReviewButtonClick}
-                    disabled={status === "unauthenticated"}
                     text="Review"
                   />
                 </div>
