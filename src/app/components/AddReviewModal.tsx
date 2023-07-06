@@ -3,8 +3,9 @@ import { useMutation } from "@tanstack/react-query";
 import { CreateReviewPayload } from "@/app/lib/validators/reviews";
 import React from "react";
 import axios, { AxiosError } from "axios";
-import { redirect, useRouter } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { useToast } from "@/components/ui/ui/use-toast";
+import { XCircle } from "lucide-react";
 
 interface AddReviewModalProps {
   setIsModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
@@ -74,6 +75,10 @@ const AddReviewModal = ({ courseId, setIsModalOpen }: AddReviewModalProps) => {
     <div className="fixed inset-0 bg-zinc-900/20 z-10">
       <div className="container flex items-center h-full max-w-lg mx-auto">
         <div className="relative bg-white w-full h-fit py-20 px-2 rounded-lg">
+          <XCircle
+            onClick={() => setIsModalOpen(false)}
+            className="absolute top-0 m-3 right-0 cursor-pointer"
+          />
           <h1 className="font-bold text-2xl text-blue-500 text-center">
             Add Review
           </h1>

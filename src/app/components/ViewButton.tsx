@@ -9,7 +9,7 @@ interface ViewButtonProps {
 const ViewButton = ({ text, id }: ViewButtonProps) => {
   return (
     <Link href={`/course/${id}`}>
-      <Button>{text}</Button>
+      <Button className="bg-blue-500">{text}</Button>
     </Link>
   );
 };

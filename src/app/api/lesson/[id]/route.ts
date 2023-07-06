@@ -14,6 +14,9 @@ export async function GET(request: Request, { params }: ParamsProps) {
       where: {
         id: id,
       },
+      include: {
+        _count: true,
+      },
     });
     return new NextResponse(JSON.stringify(singleCourse), { status: 200 });
   } catch (error) {

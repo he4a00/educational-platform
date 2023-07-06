@@ -1,71 +1,41 @@
-import { Button } from "@/components/ui/ui/button";
-import { useSession } from "next-auth/react";
+import { Button, buttonVariants } from "@/components/ui/ui/button";
 import Image from "next/image";
+import Link from "next/link";
 import React from "react";
-import ViewButton from "./ViewButton";
 
-interface CourseProps {
-  course: {
-    id: string;
-    title: string | null;
-    image: string | null;
-    category: string[];
-    describtion: string;
-    price: number;
-    createdAt: Date;
-  };
-  className: string;
-}
-
-const Course = ({ course, className }: CourseProps) => {
-  const { status } = useSession();
-  const DateFormatter = new Intl.DateTimeFormat(undefined, {
-    hour: "numeric",
-    minute: "numeric",
-    second: "numeric",
-  });
-
-  const formattedCreatedAt =
-    course.createdAt instanceof Date
-      ? DateFormatter.format(course.createdAt)
-      : "";
+const Review = ({ review }: any) => {
   return (
     <div
-      className={`${className} flex flex-col md:flex-row gap-8 items-center shadow-[rgba(0,_0,_0,_0.24)_0px_3px_8px] rounded`}
+      key={review?.id}
+      className="p-10 w-[350px] shadow-[rgba(0,_0,_0,_0.24)_0px_3px_8px] rounded-md card-container flex flex-col justify-between"
     >
-      <div className="">
+      <h1 className="text-2xl font-bold text-blue-500 truncate mb-3">
+        {review?.course?.title || ""}
+      </h1>
+      <h4 className="text-gray-500 mb-3">{review?.rating}/5</h4>
+      <p className="text-gray-500 mb-2">{review?.content}</p>
+      <div className="flex gap-5 items-center">
         <Image
-          src={course?.image || ""}
-          width={400}
-          height={400}
-          alt="course photo"
+          className="rounded-full"
+          src={review?.userImage || ""}
+          width={50}
+          height={50}
+          alt="user image"
         />
-      </div>
-      <div className="p-4">
-        <h1 className="text-2xl text-blue-400 mb-4 hover:underline cursor-pointer">
-          {course?.title}
+        <h1 className="text-xl font-bold text-blue-500">
+          {review?.username || ""}
         </h1>
-        <p className="mb-4">{course?.describtion}</p>
-        <div className="flex gap-4">
-          {course?.category?.map((cat, idx) => {
-            return (
-              <p key={idx} className="text-gray-500 cursor-pointer flex gap-4">
-                {cat}
-              </p>
-            );
-          })}
-        </div>
-        <div className="flex gap-4 mt-4">
-          <ViewButton text="View" id={course.id} />
-          <Button disabled={status === "unauthenticated"}>Enroll</Button>
-          <Button disabled={status === "unauthenticated"} variant="outline">
-            Review
-          </Button>
-        </div>
-        <p className="text-gray-500">{formattedCreatedAt}</p>
+      </div>
+      <div className="flex gap-2">
+        <Link
+          href={`/course/${review?.course?.id}`}
+          className={`${buttonVariants()} w-full mt-3`}
+        >
+          Visit Course
+        </Link>
       </div>
     </div>
   );
 };
 
-export default Course;
+export default Review;

@@ -8,7 +8,7 @@ interface ReviewButtonProps {
 
 const ReviewButton = ({ text, disabled, onClick }: ReviewButtonProps) => {
   return (
-    <Button disabled={disabled} onClick={onClick}>
+    <Button className="bg-blue-600" disabled={disabled} onClick={onClick}>
       {text}
     </Button>
   );

@@ -10,18 +10,17 @@ interface ParamsProps {
 export async function GET(request: Request, { params }: ParamsProps) {
   const { id } = params;
   try {
-    const singleCourse = await prisma.course.findFirst({
+    const courseReviews = await prisma.review.findFirst({
       where: {
-        id: id,
+        courseId: id,
       },
+      take: 6,
       include: {
-        Lesson: true,
-        Review: true,
-        _count: true,
+        course: true,
       },
     });
 
-    return new NextResponse(JSON.stringify(singleCourse), { status: 200 });
+    return new NextResponse(JSON.stringify(courseReviews), { status: 200 });
   } catch (error) {
     return new Response("Something went wrong", { status: 404 });
   }
