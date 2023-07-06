@@ -41,6 +41,14 @@ const CoursePage = () => {
     },
   });
 
+  const { data: subscription } = useQuery({
+    queryKey: ["subscribtions"],
+    queryFn: async () => {
+      const { data } = await axios.get(`/api/subscribtion/${params.id}`);
+      return data;
+    },
+  });
+
   // getting the reviews by course
 
   const { data: reviews, isLoading: reviewsLoading } = useQuery({
@@ -50,8 +58,6 @@ const CoursePage = () => {
       return data;
     },
   });
-
-  console.log(reviews);
 
   const [videoUrl, setVideoUrl] = useState<string>("");
   const [modalIsOpen, setIsModalOpen] = useState<boolean>(false);
@@ -130,10 +136,10 @@ const CoursePage = () => {
                   <h1 className="text-lg p-3 font-bold">
                     Course Enrollments:{" "}
                     <span className="text-blue-600">
-                      {course.enrollmentCount}{" "}
+                      {subscription?.subscriptionCount}
                     </span>
                   </h1>
-                  <EnrollButton />
+                  <EnrollButton courseId={course.id} />
                   <ReviewButton
                     onClick={handleReviewButtonClick}
                     disabled={status === "unauthenticated"}
