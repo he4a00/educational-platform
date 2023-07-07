@@ -1,7 +1,5 @@
-import { Button } from "@/components/ui/ui/button";
-import { useSession } from "next-auth/react";
 import Image from "next/image";
-import React, { useState } from "react";
+import React from "react";
 import ViewButton from "./ViewButton";
 
 interface CourseProps {
@@ -17,7 +15,6 @@ interface CourseProps {
 }
 
 const Course = ({ course, className }: CourseProps) => {
-  const { status } = useSession();
   const DateFormatter = new Intl.DateTimeFormat(undefined, {
     hour: "numeric",
     minute: "numeric",

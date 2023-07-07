@@ -33,10 +33,11 @@ interface SingleCourseProps {
 
 const CoursePage = () => {
   const params = useParams();
+  const { id } = params;
   const { data: course, isLoading } = useQuery({
     queryKey: ["courses"],
     queryFn: async () => {
-      const { data } = await axios.get(`/api/course/${params.id}`);
+      const { data } = await axios.get(`/api/course/${id}`);
       return data;
     },
   });
@@ -44,7 +45,7 @@ const CoursePage = () => {
   const { data: subscription } = useQuery({
     queryKey: ["subscribtions"],
     queryFn: async () => {
-      const { data } = await axios.get(`/api/subscribtion/${params.id}`);
+      const { data } = await axios.get(`/api/subscribtion/${id}`);
       return data;
     },
   });
@@ -54,7 +55,7 @@ const CoursePage = () => {
   const { data: reviews, isLoading: reviewsLoading } = useQuery({
     queryKey: ["reviews"],
     queryFn: async () => {
-      const { data } = await axios.get(`/api/review/${params.id}`);
+      const { data } = await axios.get(`/api/review/${id}`);
       return data;
     },
   });
@@ -120,8 +121,8 @@ const CoursePage = () => {
                 </div>
               ))}
             </div>
-            <div className="w-1/3 gap-7">
-              <Card>
+            <div className="md:w-1/3 gap-7 w-full">
+              <Card className="w-full">
                 <div className="flex flex-col gap-4 p-5">
                   <h1 className="text-lg p-3 font-bold">
                     Course Title:{" "}
