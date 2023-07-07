@@ -5,6 +5,7 @@ import Course from "./Course";
 import SearchBar from "./SearchBar";
 import { Facebook, Linkedin, Twitter } from "lucide-react";
 import { Skeleton } from "@/components/ui/ui/skeleton";
+import LoadingSkeleton from "./LoadingSkeleton";
 
 interface CourseProps {
   id: string;
@@ -25,8 +26,7 @@ const CoursesList = () => {
     },
   });
 
-  if (isLoading)
-    return <Skeleton className="w-[100px] h-[20px] rounded-full" />;
+  if (isLoading) return <LoadingSkeleton />;
 
   return (
     <div className="container pt-24 pb-20 flex flex-col flex-wrap">

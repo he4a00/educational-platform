@@ -2,15 +2,19 @@ import React from "react";
 import Review from "./Review";
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
+import { Skeleton } from "@/components/ui/ui/skeleton";
+import LoadingSkeleton from "./LoadingSkeleton";
 
 const ReviewsList = () => {
-  const { data: reviewsData, isLoading } = useQuery({
+  const { data: reviewsData = [], isLoading } = useQuery({
     queryKey: ["reviews"],
     queryFn: async () => {
       const { data } = await axios.get("/api/review/");
       return data;
     },
   });
+
+  if (isLoading) return <LoadingSkeleton />;
 
   return (
     <div className="container pt-24 pb-20 flex flex-col flex-wrap">
@@ -22,18 +26,10 @@ const ReviewsList = () => {
         </h1>
       </div>
       <div className="grid md:grid-cols-4 gap-11 md:gap-96">
-        {isLoading ? (
-          <p>Loading...</p>
-        ) : (
-          Array.isArray(
-            reviewsData?.map((review: any) => (
-              <Review key={review.id} review={review} />
-            ))
-          ) &&
-          reviewsData?.map((review: any) => (
-            <Review key={review.id} review={review} />
-          ))
-        )}
+        {Array.isArray(reviewsData) &&
+          reviewsData.map((review: any) => (
+            <Review className="" key={review?.id} review={review} />
+          ))}
       </div>
     </div>
   );

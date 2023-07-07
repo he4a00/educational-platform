@@ -10,14 +10,14 @@ interface ParamsProps {
 export async function GET(request: Request, { params }: ParamsProps) {
   const { id } = params;
   try {
-    const courseReviews = await prisma.review.findFirst({
+    const courseReviews = await prisma.review.findMany({
       where: {
         courseId: id,
       },
-      take: 6,
       include: {
         course: true,
       },
+      take: 6,
     });
 
     return new NextResponse(JSON.stringify(courseReviews), { status: 200 });
