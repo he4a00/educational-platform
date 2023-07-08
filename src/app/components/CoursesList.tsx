@@ -50,7 +50,7 @@ const CoursesList = () => {
       <div className="flex flex-col gap-y-10">
         {Array.isArray(coursesData) &&
           coursesData.map((course: CourseProps) => (
-            <Course className="" key={course?.id} course={course} />
+            <Course key={course?.id} course={course} />
           ))}
       </div>
     </div>

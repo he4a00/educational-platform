@@ -11,20 +11,10 @@ interface CourseProps {
     describtion: string;
     createdAt: Date;
   };
-  className: string;
+  className?: string;
 }
 
 const Course = ({ course, className }: CourseProps) => {
-  const DateFormatter = new Intl.DateTimeFormat(undefined, {
-    hour: "numeric",
-    minute: "numeric",
-    second: "numeric",
-  });
-
-  const formattedCreatedAt =
-    course.createdAt instanceof Date
-      ? DateFormatter.format(course.createdAt)
-      : "";
   return (
     <div
       className={`${className} flex flex-col md:flex-row gap-8 items-center shadow-[rgba(0,_0,_0,_0.24)_0px_3px_8px] rounded`}
@@ -55,7 +45,7 @@ const Course = ({ course, className }: CourseProps) => {
           })}
         </div>
         <div className="flex gap-4 mt-4">
-          <ViewButton text="View" id={course.id} />
+          <ViewButton text="View" id={course?.id} />
         </div>
       </div>
     </div>

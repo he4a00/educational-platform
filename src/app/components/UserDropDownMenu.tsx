@@ -9,6 +9,7 @@ import {
 import React from "react";
 import UserAvatar from "./UserAvatar";
 import { signOut, useSession } from "next-auth/react";
+import Link from "next/link";
 
 const UserDropDownMenu = () => {
   const { data: session } = useSession();
@@ -31,8 +32,13 @@ const UserDropDownMenu = () => {
         <DropdownMenuItem className="cursor-pointer">
           My Profile
         </DropdownMenuItem>
+        <Link href={`/my-courses/${session?.user.id}`}>
+          <DropdownMenuItem className="cursor-pointer">
+            My Courses
+          </DropdownMenuItem>
+        </Link>
         <DropdownMenuItem className="cursor-pointer">
-          My Courses
+          Favourite List
         </DropdownMenuItem>
         {session?.user.type === "ADMIN" ? (
           <DropdownMenuItem className="cursor-pointer">

@@ -13,6 +13,7 @@ import ReviewButton from "@/app/components/ReviewButton";
 import { Button } from "@/components/ui/ui/button";
 import { Card } from "@/components/ui/ui/card";
 import { Skeleton } from "@/components/ui/ui/skeleton";
+import AddToFavButton from "@/app/components/AddToFavButton";
 
 interface SingleCourseProps {
   course: {
@@ -53,6 +54,14 @@ const CoursePage = () => {
     },
   });
 
+  const { data: savedCourse } = useQuery({
+    queryKey: ["savedCourses"],
+    queryFn: async () => {
+      const { data } = await axios.get(`/api/saved/${id}`);
+      return data;
+    },
+  });
+
   const { data: reviews, isLoading: reviewsLoading } = useQuery({
     queryKey: ["reviews"],
     queryFn: async () => {
@@ -60,8 +69,6 @@ const CoursePage = () => {
       return data;
     },
   });
-
-  console.log(reviews);
 
   const [videoUrl, setVideoUrl] = useState<string>("");
   const [modalIsOpen, setIsModalOpen] = useState<boolean>(false);
@@ -93,7 +100,7 @@ const CoursePage = () => {
               allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
             />
           </div>
-          <div className="flex flex-col md:flex-row">
+          <div className="flex flex-col md:flex-row gap-3">
             <div className="w-2/3">
               {subscription?.isSubscribed ? (
                 course?.Lesson?.map((lesson: SingleCourseProps) => (
@@ -118,39 +125,49 @@ const CoursePage = () => {
                   </div>
                 ))
               ) : (
-                <div className="w-full flex items-center justify-center">
-                  <h1>You Are Not Subscriped To This Course</h1>
+                <div className="w-full h-full flex items-center justify-center border rounded-lg">
+                  <h1 className="text-2xl font-bold">
+                    You Are Not Subscriped To This Course
+                  </h1>
                 </div>
               )}
             </div>
-            <div className="md:w-1/3 gap-7 w-full">
-              <Card className="w-full">
-                <div className="flex flex-col gap-4 p-5">
-                  <h1 className="text-lg p-3 font-bold">
-                    Course Title:{" "}
-                    <span className="text-blue-600">{course.title}</span>
-                  </h1>
-                  <h1 className="text-lg p-3 font-bold">
-                    Course Lessons:{" "}
-                    <span className="text-blue-600">
-                      {course.Lesson?.length}
-                    </span>
-                  </h1>
-                  <h1 className="text-lg p-3 font-bold">
-                    Course Enrollments:{" "}
-                    <span className="text-blue-600">
-                      {subscription?.subscriptionCount}
-                    </span>
-                  </h1>
-                  <EnrollButton courseId={course.id} />
-                  <ReviewButton
-                    onClick={handleReviewButtonClick}
-                    text="Review"
-                    disabled={subscription?.isSubscribed === false}
-                  />
-                </div>
-              </Card>
-            </div>
+            {courseLoading ? (
+              <LoadingSkeleton />
+            ) : (
+              <div className="md:w-1/3 gap-7 w-full">
+                <Card className="w-full">
+                  <div className="flex flex-col gap-4 p-5">
+                    <h1 className="text-lg p-3 font-bold">
+                      Course Title:{" "}
+                      <span className="text-blue-600">{course.title}</span>
+                    </h1>
+                    <h1 className="text-lg p-3 font-bold">
+                      Course Lessons:{" "}
+                      <span className="text-blue-600">
+                        {course.Lesson?.length}
+                      </span>
+                    </h1>
+                    <h1 className="text-lg p-3 font-bold">
+                      Course Enrollments:{" "}
+                      <span className="text-blue-600">
+                        {subscription?.subscriptionCount}
+                      </span>
+                    </h1>
+                    <EnrollButton courseId={course.id} />
+                    <ReviewButton
+                      onClick={handleReviewButtonClick}
+                      text="Review"
+                      disabled={subscription?.isSubscribed === false}
+                    />
+                    <AddToFavButton
+                      courseId={course?.id}
+                      text="Add To Favourite"
+                    />
+                  </div>
+                </Card>
+              </div>
+            )}
           </div>
           <div className="pt-10">
             <h1 className="p-3">
@@ -160,7 +177,7 @@ const CoursePage = () => {
             </h1>
           </div>
           <div className="grid md:grid-cols-3 gap-11 md:gap-26">
-            {reviews.map((review: any) => (
+            {reviews?.map((review: any) => (
               <Review key={review.id} review={review} />
             ))}
           </div>
