@@ -9,18 +9,7 @@ import UserDropDownMenu from "./UserDropDownMenu";
 import SearchBar from "./SearchBar";
 
 const Navbar = () => {
-  // const [isLoading, setIsLoading] = useState<boolean>(false);
-  // const logout = async () => {
-  //   setIsLoading(true);
-  //   try {
-  //     void signOut();
-  //   } catch (error) {
-  //     console.log(error);
-  //   } finally {
-  //     setIsLoading(false);
-  //   }
-  // };
-  const { data: session } = useSession();
+  const { data: session, status } = useSession();
 
   return (
     <div className="flex justify-between items-center h-16 border-b-4 p-3 sticky container">
@@ -36,11 +25,13 @@ const Navbar = () => {
         </Link>
         <h3 className="text-bold text-2xl hidden md:flex">Englishy</h3>
       </div>
-      <div>
+      <div className="hidden md:block">
         <SearchBar className="" />
       </div>
       <div className="flex gap-5">
-        {session?.user ? (
+        {status === "loading" ? (
+          <Button disabled>Loading...</Button>
+        ) : session?.user ? (
           <UserDropDownMenu />
         ) : (
           <Link href="/sign-in">

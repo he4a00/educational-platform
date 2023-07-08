@@ -37,3 +37,5 @@ export async function POST(request: Request) {
     return new Response("Could not create course", { status: 500 });
   }
 }
+
+

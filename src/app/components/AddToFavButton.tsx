@@ -5,6 +5,7 @@ import { CreateSavedPayload } from "../lib/validators/saved";
 import axios, { AxiosError } from "axios";
 import { useToast } from "@/components/ui/ui/use-toast";
 import { useParams } from "next/navigation";
+import { useRouter } from "next/navigation";
 
 interface AddToFavButtonProps {
   text: string;
@@ -13,6 +14,7 @@ interface AddToFavButtonProps {
 
 const AddToFavButton = ({ text, courseId }: AddToFavButtonProps) => {
   const params = useParams();
+  const router = useRouter();
   const { toast } = useToast();
   const { mutate: savePost, isLoading: savedLoading } = useMutation({
     mutationFn: async () => {
@@ -42,10 +44,39 @@ const AddToFavButton = ({ text, courseId }: AddToFavButtonProps) => {
         }
       }
     },
-    onSuccess: (data) => {
+    onSuccess: () => {
       toast({
         title: "Saved Successfully",
         description: "You have successfully saved this course.",
+        variant: "default",
+      });
+      router.prefetch("/");
+    },
+  });
+
+  // delete the saved course
+
+  const { mutate: unSavePost, isLoading: unSavePostLoading } = useMutation({
+    mutationFn: async () => {
+      const { data } = await axios.delete(`/api/saved/${params.id}`);
+      return data;
+    },
+    onError: (err) => {
+      if (err instanceof AxiosError) {
+        if (err.response?.status === 401) {
+          toast({
+            title: "No Session Founded",
+            description: "You must be logged in to unsave this course",
+            variant: "destructive",
+          });
+        }
+      }
+    },
+    onSuccess: (data) => {
+      console.log(data);
+      toast({
+        title: "Unsaved Successfully",
+        description: "You have successfully unsaved this course.",
         variant: "default",
       });
     },
@@ -59,11 +90,12 @@ const AddToFavButton = ({ text, courseId }: AddToFavButtonProps) => {
     },
   });
 
-
   return (
     <>
       {savedCourse ? (
-        <Button disabled>Saved</Button>
+        <Button onClick={() => unSavePost()} disabled={unSavePostLoading}>
+          Saved
+        </Button>
       ) : (
         <Button
           onClick={() => savePost()}
