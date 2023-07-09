@@ -73,8 +73,6 @@ const CoursePage = () => {
   const [videoUrl, setVideoUrl] = useState<string>("");
   const [modalIsOpen, setIsModalOpen] = useState<boolean>(false);
 
-  
-
   const handleReviewButtonClick = () => {
     setIsModalOpen(true);
   };
@@ -84,7 +82,7 @@ const CoursePage = () => {
       {modalIsOpen && (
         <AddReviewModal setIsModalOpen={setIsModalOpen} courseId={course.id} />
       )}
-      <HeroPage />
+
       {courseLoading ? (
         <LoadingSkeleton />
       ) : (
