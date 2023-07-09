@@ -73,9 +73,7 @@ const CoursePage = () => {
   const [videoUrl, setVideoUrl] = useState<string>("");
   const [modalIsOpen, setIsModalOpen] = useState<boolean>(false);
 
-  if (!course) {
-    return notFound();
-  }
+  
 
   const handleReviewButtonClick = () => {
     setIsModalOpen(true);
