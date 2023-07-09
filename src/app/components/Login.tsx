@@ -2,7 +2,7 @@
 import React, { useState } from "react";
 import { signIn } from "next-auth/react";
 import Image from "next/image";
-import { Button } from "@/components/ui/ui/button";
+import { Modal,Button, Text, Input, Row, Checkbox } from "@nextui-org/react";
 
 const Login = () => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -16,9 +16,17 @@ const Login = () => {
       setIsLoading(false);
     }
   };
+
+  const [visible, setVisible] = React.useState(false);
+  const handler = () => setVisible(true);
+
+  const closeHandler = () => {
+    setVisible(false);
+    console.log("closed");
+  };
   return (
     <div className="flex flex-col">
-      <div className="flex flex-col items-center justify-center gap-y-3">
+      {/* <div className="flex flex-col items-center justify-center gap-y-3">
         <Image
           src="https://img.freepik.com/free-vector/illustration-graduation-hat_53876-5920.jpg?w=826&t=st=1688346105~exp=1688346705~hmac=2860f1626f7ae2f184db11055661b87fc02d1dc128333664b2c35ce7b7bcd7b6"
           width={80}
@@ -32,15 +40,38 @@ const Login = () => {
           User Agreement.
         </p>
         <p>To Access The Content of This Site Please Sign In First</p>
-        <Button
-          className="w-full"
-          size="lg"
-          onClick={loginWithGoogle}
-          disabled={isLoading}
-        >
-           Sign In
-        </Button>
-      </div>
+        
+      </div> */}
+      <Modal
+        closeButton
+        aria-labelledby="modal-title"
+        open={visible}
+        onClose={closeHandler}
+      >
+        <Modal.Header>
+          <Text id="modal-title" size={18}>
+            Welcome to
+            <Text b size={18}>
+              Englishy
+            </Text>
+          </Text>
+        </Modal.Header>
+        <Modal.Body>
+          <Button
+            className="w-full"
+            size="lg"
+            onClick={loginWithGoogle}
+            disabled={isLoading}
+          >
+            Sign In
+          </Button>
+        </Modal.Body>
+        <Modal.Footer>
+          <Button auto flat color="error" onPress={closeHandler}>
+            Close
+          </Button>
+        </Modal.Footer>
+      </Modal>
     </div>
   );
 };
