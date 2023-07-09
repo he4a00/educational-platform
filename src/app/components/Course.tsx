@@ -2,6 +2,7 @@ import Image from "next/image";
 import React from "react";
 import ViewButton from "./ViewButton";
 import Link from "next/link";
+import Head from "next/head";
 
 interface CourseProps {
   course: {
@@ -17,15 +18,19 @@ interface CourseProps {
 
 const Course = ({ course, className }: CourseProps) => {
   return (
-    <div
-      className={`${className} flex flex-col md:flex-row gap-8 items-center shadow-[rgba(0,_0,_0,_0.24)_0px_3px_8px] rounded`}
-    >
-      <div className="">
+    <div>
+      <Head>
+        <link rel="preload" href={course?.image || ""} as="image" />
+      </Head>
+      className=
+      {`${className} flex flex-col md:flex-row gap-8 items-center shadow-[rgba(0,_0,_0,_0.24)_0px_3px_8px] rounded`}
+      <div>
         <Image
           src={course?.image || ""}
           width={400}
           height={400}
           alt="course photo"
+          placeholder="blur"
         />
       </div>
       <div className="p-4">
