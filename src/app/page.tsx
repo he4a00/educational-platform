@@ -7,7 +7,7 @@ import ReviewsList from "./components/ReviewsList";
 export default function Home() {
   return (
     <main className="">
-      <HeroPage />
+      {/* <HeroPage /> */}
       <CoursesList />
       <ReviewsList />
     </main>
