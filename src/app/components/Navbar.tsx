@@ -81,7 +81,6 @@ const Navbar = () => {
           <Modal.Body>
             <div className="flex flex-col items-center justify-center gap-y-3">
               <Image
-                loading="lazy"
                 src="https://img.freepik.com/free-vector/illustration-graduation-hat_53876-5920.jpg?w=826&t=st=1688346105~exp=1688346705~hmac=2860f1626f7ae2f184db11055661b87fc02d1dc128333664b2c35ce7b7bcd7b6"
                 width={80}
                 height={80}

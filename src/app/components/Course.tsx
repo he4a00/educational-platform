@@ -22,7 +22,6 @@ const Course = ({ course, className }: CourseProps) => {
     >
       <div className="">
         <Image
-          loading="lazy"
           src={course?.image || ""}
           width={400}
           height={400}
