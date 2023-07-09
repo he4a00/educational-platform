@@ -18,12 +18,12 @@ interface CourseProps {
 
 const Course = ({ course, className }: CourseProps) => {
   return (
-    <div>
+    <div
+      className={`${className} flex flex-col md:flex-row gap-8 items-center shadow-[rgba(0,_0,_0,_0.24)_0px_3px_8px] rounded`}
+    >
       <Head>
         <link rel="preload" href={course?.image || ""} as="image" />
       </Head>
-      className=
-      {`${className} flex flex-col md:flex-row gap-8 items-center shadow-[rgba(0,_0,_0,_0.24)_0px_3px_8px] rounded`}
       <div>
         <Image
           src={course?.image || ""}
