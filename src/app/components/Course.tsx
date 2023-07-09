@@ -1,6 +1,7 @@
 import Image from "next/image";
 import React from "react";
 import ViewButton from "./ViewButton";
+import Link from "next/link";
 
 interface CourseProps {
   course: {
@@ -35,12 +36,11 @@ const Course = ({ course, className }: CourseProps) => {
         <div className="flex gap-4">
           {course?.category?.map((cat, idx) => {
             return (
-              <p
-                key={idx}
-                className="text-gray-500 cursor-pointer flex gap-4 hover:text-black"
-              >
-                {cat}
-              </p>
+              <Link key={idx} href={`/category/${cat}`}>
+                <p className="text-gray-500 cursor-pointer flex gap-4 hover:text-black">
+                  {cat}
+                </p>
+              </Link>
             );
           })}
         </div>
