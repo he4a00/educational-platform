@@ -55,7 +55,7 @@ const Navbar = () => {
         ) : session?.user ? (
           <UserDropDownMenu />
         ) : (
-          <Button auto onPress={handler}>
+          <Button className="w-[100px] h-[50px]" auto onPress={handler}>
             Sign In
           </Button>
         )}
