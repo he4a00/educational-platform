@@ -13,7 +13,7 @@ const Review = ({ review }: any) => {
         {review?.course?.title || ""}
       </h1>
       <h4 className="text-gray-500 mb-3">{review?.rating}/5</h4>
-      <p className="text-gray-500 mb-2">{review?.content}</p>
+      <p className="text-gray-500 mb-2 truncate">{review?.content}</p>
       <div className="flex gap-5 items-center">
         <Image
           className="rounded-full"

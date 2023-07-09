@@ -133,13 +133,6 @@ model SavedCourses {
   user   User   @relation(fields: [userId], references: [id])
 }
 
-// model Category {
-//   id          String   @id @default(auto()) @map("_id") @db.ObjectId
-//   name        String
-//   description String
-//   courseId    String   @unique @db.ObjectId
-//   course      Course[]
-// }
 
 model UserProgress {
   id       String            @id @default(auto()) @map("_id") @db.ObjectId
