@@ -35,7 +35,7 @@ const Categories = () => {
         <br />
         <span className="text-2xl font-bold">For You</span>
       </h1>
-      <div className="flex md:flex-row flex-col w-full gap-4">
+      <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
         {categories?.map((category: string) => {
           return (
             <Card key={category} isHoverable isPressable variant="bordered">

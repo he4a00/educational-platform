@@ -10,8 +10,11 @@ export async function GET(request: Request) {
     });
 
     const allCategories = categories.flatMap((category) => category.category);
+    const uniqueCategoriesSet = new Set(allCategories);
+    const uniqueCategoriesArray = Array.from(uniqueCategoriesSet);
+    const firstTenUniqueCategories = uniqueCategoriesArray.slice(0, 10);
 
-    return new NextResponse(JSON.stringify(allCategories), {
+    return new NextResponse(JSON.stringify(firstTenUniqueCategories), {
       status: 200,
     });
   } catch (error) {
