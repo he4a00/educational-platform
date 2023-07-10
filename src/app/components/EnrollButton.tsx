@@ -1,7 +1,7 @@
 import { Button } from "@/components/ui/ui/button";
 import { useToast } from "@/components/ui/ui/use-toast";
 import { useMutation, useQuery } from "@tanstack/react-query";
-import React, { startTransition } from "react";
+import React, { startTransition, useState } from "react";
 import { CreateSubscribtionPayload } from "../lib/validators/subscribtion";
 import axios, { AxiosError } from "axios";
 import { useParams, useRouter } from "next/navigation";
@@ -16,6 +16,7 @@ interface EnrollButtonProps {
 const EnrollButton = ({ className, courseId }: EnrollButtonProps) => {
   const params = useParams();
   const router = useRouter();
+  const [enrolled, setEnrolled] = useState<boolean | null>(null);
 
   const { toast } = useToast();
 
@@ -54,9 +55,7 @@ const EnrollButton = ({ className, courseId }: EnrollButtonProps) => {
         description: "You Enrolled this course successfully",
         variant: "default",
       });
-      startTransition(() => {
-        router.prefetch(`/course/${courseId}`);
-      });
+      setEnrolled(true);
     },
   });
 
@@ -74,7 +73,7 @@ const EnrollButton = ({ className, courseId }: EnrollButtonProps) => {
 
   return (
     <>
-      {isSubscribed ? (
+      {enrolled ? (
         <Button disabled={true} className={`w-full ${className}`}>
           Enrolled
         </Button>

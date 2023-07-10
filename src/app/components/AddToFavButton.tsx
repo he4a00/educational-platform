@@ -1,6 +1,6 @@
 import { Button } from "@/components/ui/ui/button";
 import { useMutation, useQuery } from "@tanstack/react-query";
-import React, { startTransition } from "react";
+import React, { startTransition, useState } from "react";
 import { CreateSavedPayload } from "../lib/validators/saved";
 import axios, { AxiosError } from "axios";
 import { useToast } from "@/components/ui/ui/use-toast";
@@ -16,6 +16,7 @@ const AddToFavButton = ({ text, courseId }: AddToFavButtonProps) => {
   const params = useParams();
   const router = useRouter();
   const { toast } = useToast();
+  const [saved, setSavedCourse] = useState<boolean | null>(null);
   const { mutate: savePost, isLoading: savedLoading } = useMutation({
     mutationFn: async () => {
       const payload: CreateSavedPayload = {
@@ -50,9 +51,7 @@ const AddToFavButton = ({ text, courseId }: AddToFavButtonProps) => {
         description: "You have successfully saved this course.",
         variant: "default",
       });
-      startTransition(() => {
-        router.prefetch("/");
-      });
+      setSavedCourse(true); // Update the savedCourse state immediately
     },
   });
 
@@ -74,16 +73,13 @@ const AddToFavButton = ({ text, courseId }: AddToFavButtonProps) => {
         }
       }
     },
-    onSuccess: (data) => {
-      console.log(data);
+    onSuccess: () => {
       toast({
         title: "Unsaved Successfully",
         description: "You have successfully unsaved this course.",
         variant: "default",
       });
-      startTransition(() => {
-        router.prefetch(`/course/${courseId}`);
-      });
+      setSavedCourse(false); // Update the savedCourse state immediately
     },
   });
 
@@ -97,7 +93,7 @@ const AddToFavButton = ({ text, courseId }: AddToFavButtonProps) => {
 
   return (
     <>
-      {savedCourse ? (
+      {saved ? (
         <Button onClick={() => unSavePost()} disabled={unSavePostLoading}>
           Saved
         </Button>

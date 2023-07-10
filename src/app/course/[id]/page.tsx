@@ -13,7 +13,7 @@ import { Button } from "@/components/ui/ui/button";
 import { Card } from "@/components/ui/ui/card";
 import AddToFavButton from "@/app/components/AddToFavButton";
 import Image from "next/image";
-import { File, Puzzle, Tv } from "lucide-react";
+import { File, Puzzle, Tv, User } from "lucide-react";
 import { Medal } from "lucide-react";
 
 const CoursePage = () => {
@@ -35,6 +35,8 @@ const CoursePage = () => {
       return data;
     },
   });
+
+  console.log(subscription);
 
   const { data: savedCourse } = useQuery({
     queryKey: ["savedCourses"],
@@ -95,7 +97,7 @@ const CoursePage = () => {
                 </span>
               </p>
               <div className="flex flex-wrap justify-between flex-col">
-                {displayedLessons.map((lesson: any) => (
+                {displayedLessons?.map((lesson: any) => (
                   <div
                     className="flex flex-col md:flex-row justify-between p-5"
                     key={lesson?.id}
@@ -180,6 +182,10 @@ const CoursePage = () => {
                         <p className="flex gap-3 items-center pb-2">
                           <File />
                           {course?.sectionsNumber} sections
+                        </p>
+                        <p className="flex gap-3 items-center pb-2">
+                          <User />
+                          {subscription?.subscriptionCount} Enrollments
                         </p>
                         {course?.hasCoupon ? (
                           <p className="flex gap-3 items-center pb-2">
