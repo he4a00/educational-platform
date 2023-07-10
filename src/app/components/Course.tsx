@@ -30,7 +30,6 @@ const Course = ({ course, className }: CourseProps) => {
           width={400}
           height={400}
           alt="course photo"
-          placeholder="blur"
         />
       </div>
       <div className="p-4">
