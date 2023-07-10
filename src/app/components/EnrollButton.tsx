@@ -55,7 +55,7 @@ const EnrollButton = ({ className, courseId }: EnrollButtonProps) => {
         variant: "default",
       });
       startTransition(() => {
-        router.refresh();
+        router.prefetch(`/course/${courseId}`);
       });
     },
   });

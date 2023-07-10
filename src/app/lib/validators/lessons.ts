@@ -2,7 +2,7 @@ import { z } from "zod";
 
 export const LessonValidator = z.object({
   videoTitle: z.string().max(40),
-  videoLink: z.string(),
+  videoLink: z.string().optional(),
   createdAt: z.date().optional(),
   updatedAt: z.date().optional(),
   duration: z.number(),

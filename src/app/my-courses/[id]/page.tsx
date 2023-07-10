@@ -53,8 +53,8 @@ const MyCourses = () => {
         subscribedCourses.map((course: CourseProps) => (
           <Course
             className="m-7"
-            key={course?.course.id}
-            course={course.course}
+            key={course?.course?.id}
+            course={course?.course}
           />
         ))}
     </div>

@@ -1,6 +1,6 @@
 "use client";
-
-import React, { useState } from "react";
+import { useState } from "react";
+import ShowMoreText from "react-show-more-text";
 import { useParams } from "next/navigation";
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
@@ -13,27 +13,8 @@ import { Button } from "@/components/ui/ui/button";
 import { Card } from "@/components/ui/ui/card";
 import AddToFavButton from "@/app/components/AddToFavButton";
 import Image from "next/image";
-import { File, FolderDown, Puzzle, Tv } from "lucide-react";
+import { File, Puzzle, Tv } from "lucide-react";
 import { Medal } from "lucide-react";
-
-// interface SingleCourseProps {
-//   course: {
-//     id: string;
-//     title: string | null;
-//     image: string | null;
-//     category: string[];
-//     description: string;
-//     createdAt: Date;
-//     enrollmentCount: number;
-//   };
-//   id: string;
-//   videoTitle: string;
-//   videoLink: string;
-//   duration: number;
-//   createdAt: Date;
-//   courseId: string;
-//   count: number;
-// }
 
 const CoursePage = () => {
   const params = useParams();
@@ -73,10 +54,20 @@ const CoursePage = () => {
 
   const [videoUrl, setVideoUrl] = useState<string>("");
   const [modalIsOpen, setIsModalOpen] = useState<boolean>(false);
+  const [currentPage, setCurrentPage] = useState<number>(1);
+  const lessonsPerPage = 5;
 
   const handleReviewButtonClick = () => {
     setIsModalOpen(true);
   };
+
+  // Calculate the index range of lessons to display based on the current page
+  const indexOfLastLesson = currentPage * lessonsPerPage;
+  const indexOfFirstLesson = indexOfLastLesson - lessonsPerPage;
+  const displayedLessons = course?.Lesson?.slice(
+    indexOfFirstLesson,
+    indexOfLastLesson
+  );
 
   return (
     <div className="container p-4 flex flex-col">
@@ -88,47 +79,82 @@ const CoursePage = () => {
         <LoadingSkeleton />
       ) : (
         <div>
-          <div className="flex items-center justify-center p-5">
-            <iframe
-              width="1280"
-              height="720"
-              src={`https://www.youtube.com/embed/${videoUrl}`}
-              title="YouTube Video"
-              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-            />
+          <div className="flex">
+            <div className="flex justify-between"></div>
           </div>
           <div className="flex flex-col md:flex-row gap-3">
-            <div className="w-2/3">
-              {subscription?.isSubscribed ? (
-                course?.Lesson?.map((lesson: any) => (
+            <div className="w-2/3 flex flex-col">
+              <h1 className="p-5 text-2xl font-bold">Course Content</h1>
+              <p className="text-gray-900 p-5">
+                <span>{course?.sectionsNumber} Sections .</span>
+                <span>
+                  {""} {course?.Lesson?.length} Lectures .
+                </span>
+                <span>
+                  {""} {course?.hoursNumber} Hour Total Length
+                </span>
+              </p>
+              <div className="flex flex-wrap justify-between flex-col">
+                {displayedLessons.map((lesson: any) => (
                   <div
-                    className="flex jutify-between p-5 text-blue-500"
-                    key={lesson.id}
+                    className="flex flex-col md:flex-row justify-between p-5"
+                    key={lesson?.id}
                   >
-                    <div>
-                      <h1 className="text-xl font-bold p-2">
-                        {lesson.videoTitle}
-                      </h1>
-                      <p className="text-gray-500 p-2">{lesson.duration}</p>
+                    <div className="flex items-center gap-3">
+                      <h6 className="hover:underline text-md font-bold text-blue-700 cursor-pointer">
+                        {lesson?.videoTitle}
+                      </h6>
                     </div>
-                    <div>
-                      <Button
-                        onClick={() => setVideoUrl(lesson.videoLink)}
-                        className="bg-blue-500"
-                      >
-                        Play
-                      </Button>
+                    <div className="flex gap-6 items-center">
+                      {subscription?.isSubscribed ? (
+                        <Button>Play</Button>
+                      ) : (
+                        <Button className="bg-blue-900">Preview</Button>
+                      )}
+                      <p>05:00</p>
                     </div>
                   </div>
-                ))
-              ) : (
-                <div className="w-full h-full flex items-center justify-center border rounded-lg">
-                  <h1 className="text-2xl font-bold">
-                    You Are Not Subscriped To This Course
-                  </h1>
-                </div>
-              )}
+                ))}
+                {/* Pagination controls */}
+
+                {course?.Lesson?.length > lessonsPerPage && (
+                  <div className="flex justify-center mt-6">
+                    <button
+                      onClick={() => setCurrentPage(currentPage - 1)}
+                      disabled={currentPage === 1}
+                      className="px-4 py-2 mr-2 font-medium text-gray-700 bg-gray-200 rounded-md cursor-pointer disabled:opacity-50"
+                    >
+                      Previous Page
+                    </button>
+                    <button
+                      onClick={() => setCurrentPage(currentPage + 1)}
+                      disabled={indexOfLastLesson >= course?.Lesson?.length}
+                      className="px-4 py-2 font-medium text-gray-700 bg-gray-200 rounded-md cursor-pointer disabled:opacity-50"
+                    >
+                      Next Page
+                    </button>
+                  </div>
+                )}
+              </div>
+
+              {/* course description */}
+              <div className="border-t pt-10">
+                <h1 className="pt-3 pb-3 text-lg font-bold">Description</h1>
+                <ShowMoreText
+                  lines={3}
+                  more="Show more"
+                  less="Show less"
+                  className="content-css"
+                  anchorClass="show-more-less-clickable"
+                  expanded={false}
+                  width={800}
+                  truncatedEndingComponent={"... "}
+                >
+                  <p className="text-gray-950 text-lg">{course?.describtion}</p>
+                </ShowMoreText>
+              </div>
             </div>
+
             {courseLoading ? (
               <LoadingSkeleton />
             ) : (
@@ -185,6 +211,7 @@ const CoursePage = () => {
               </div>
             )}
           </div>
+
           <div className="pt-10">
             <h1 className="p-3">
               <span className="text-3xl font-bold text-blue-500">Students</span>

@@ -17,19 +17,18 @@ export async function POST(request: Request) {
     const { videoTitle, videoLink, courseId, duration, createdAt, updatedAt } =
       LessonValidator.parse(body);
 
-    const existedLesson = await prisma.lesson.findFirst({
-      where: {
-        videoLink,
-      },
-    });
+    // const existedLesson = await prisma.lesson.findFirst({
+    //   where: {
+    //     videoLink,
+    //   },
+    // });
 
-    if (existedLesson) {
-      return new Response("Already Exists", { status: 409 });
-    }
+    // if (existedLesson) {
+    //   return new Response("Already Exists", { status: 409 });
+    // }
     const newLesson = await prisma.lesson.create({
       data: {
         videoTitle,
-        videoLink,
         courseId,
         duration,
         createdAt,

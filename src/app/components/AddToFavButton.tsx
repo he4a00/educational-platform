@@ -1,6 +1,6 @@
 import { Button } from "@/components/ui/ui/button";
 import { useMutation, useQuery } from "@tanstack/react-query";
-import React from "react";
+import React, { startTransition } from "react";
 import { CreateSavedPayload } from "../lib/validators/saved";
 import axios, { AxiosError } from "axios";
 import { useToast } from "@/components/ui/ui/use-toast";
@@ -36,7 +36,7 @@ const AddToFavButton = ({ text, courseId }: AddToFavButtonProps) => {
 
         if (err.response?.status === 401) {
           toast({
-            title: "No Session Founded",
+            title: "No Session Found",
             description:
               "You must be logged in to add a review for this course",
             variant: "destructive",
@@ -50,7 +50,9 @@ const AddToFavButton = ({ text, courseId }: AddToFavButtonProps) => {
         description: "You have successfully saved this course.",
         variant: "default",
       });
-      router.prefetch("/");
+      startTransition(() => {
+        router.prefetch("/");
+      });
     },
   });
 
@@ -65,7 +67,7 @@ const AddToFavButton = ({ text, courseId }: AddToFavButtonProps) => {
       if (err instanceof AxiosError) {
         if (err.response?.status === 401) {
           toast({
-            title: "No Session Founded",
+            title: "No Session Found",
             description: "You must be logged in to unsave this course",
             variant: "destructive",
           });
@@ -78,6 +80,9 @@ const AddToFavButton = ({ text, courseId }: AddToFavButtonProps) => {
         title: "Unsaved Successfully",
         description: "You have successfully unsaved this course.",
         variant: "default",
+      });
+      startTransition(() => {
+        router.prefetch(`/course/${courseId}`);
       });
     },
   });

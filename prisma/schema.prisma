@@ -105,7 +105,7 @@ model Lesson {
   id         String   @id @default(auto()) @map("_id") @db.ObjectId
   courseId   String   @db.ObjectId
   videoTitle String
-  videoLink  String
+  videoLink  String?
   createdAt  DateTime @default(now())
   updatedAt  DateTime @default(now())
   duration   Float
