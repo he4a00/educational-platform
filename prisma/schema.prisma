@@ -69,16 +69,21 @@ enum ProgressionStatus {
 }
 
 model Course {
-  id              String   @id @default(auto()) @map("_id") @db.ObjectId
-  userId          String?  @db.ObjectId
-  title           String
-  image           String
-  price           Float?
-  describtion     String
-  category        String[]
-  createdAt       DateTime @default(now())
-  updatedAt       DateTime @default(now())
-  enrollmentCount Int      @default(0)
+  id                    String   @id @default(auto()) @map("_id") @db.ObjectId
+  userId                String?  @db.ObjectId
+  title                 String
+  image                 String
+  price                 Float?
+  describtion           String
+  category              String[]
+  createdAt             DateTime @default(now())
+  updatedAt             DateTime @default(now())
+  enrollmentCount       Int      @default(0)
+  hoursNumber           Int      @default(0)
+  certificateOnComplete Boolean  @default(false)
+  hasCoupon             Boolean  @default(false)
+  sectionsNumber        Int      @default(1)
+  downloableResources   Int      @default(0)
 
   user         User?          @relation(fields: [userId], references: [id], onDelete: Cascade)
   Lesson       Lesson[]
@@ -132,7 +137,6 @@ model SavedCourses {
   course Course @relation(fields: [courseId], references: [id], onDelete: Cascade)
   user   User   @relation(fields: [userId], references: [id])
 }
-
 
 model UserProgress {
   id       String            @id @default(auto()) @map("_id") @db.ObjectId

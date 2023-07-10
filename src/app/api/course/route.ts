@@ -9,9 +9,9 @@ export async function POST(request: Request) {
   try {
     const session = await getAuthSession();
 
-    if (!session?.user) {
-      return new Response("Unauthorized", { status: 401 });
-    }
+    // if (!session?.user) {
+    //   return new Response("Unauthorized", { status: 401 });
+    // }
 
     const body = await request.json();
     const {
@@ -23,6 +23,10 @@ export async function POST(request: Request) {
       title,
       updatedAt,
       enrollmentCount,
+      certificateOnComplete,
+      downloableResources,
+      hasCoupon,
+      hoursNumber,
     } = CourseValidator.parse(body);
 
     const existedCourse = await prisma.course.findFirst({
@@ -45,6 +49,10 @@ export async function POST(request: Request) {
         updatedAt,
         enrollmentCount,
         userId: session?.user.id,
+        certificateOnComplete,
+        downloableResources,
+        hasCoupon,
+        hoursNumber,
       },
     });
     return new NextResponse(JSON.stringify(newCourse), { status: 200 });

@@ -10,6 +10,11 @@ export const CourseValidator = z.object({
   updatedAt: z.date().optional(),
   enrollmentCount: z.number().optional(),
   userId: z.string().optional(),
+  hoursNumber: z.number(),
+  certificateOnComplete: z.boolean(),
+  hasCoupon: z.boolean(),
+  sectionsNumber: z.number(),
+  downloableResources: z.number(),
 });
 
 export type CreateCoursePayload = z.infer<typeof CourseValidator>;

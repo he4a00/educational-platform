@@ -1,38 +1,39 @@
 "use client";
 
 import React, { useState } from "react";
-import { notFound, useParams } from "next/navigation";
+import { useParams } from "next/navigation";
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 import LoadingSkeleton from "@/app/components/LoadingSkeleton";
 import AddReviewModal from "@/app/components/AddReviewModal";
 import EnrollButton from "@/app/components/EnrollButton";
-import HeroPage from "@/app/components/HeroPage";
 import Review from "@/app/components/Review";
 import ReviewButton from "@/app/components/ReviewButton";
 import { Button } from "@/components/ui/ui/button";
 import { Card } from "@/components/ui/ui/card";
-import { Skeleton } from "@/components/ui/ui/skeleton";
 import AddToFavButton from "@/app/components/AddToFavButton";
+import Image from "next/image";
+import { File, FolderDown, Puzzle, Tv } from "lucide-react";
+import { Medal } from "lucide-react";
 
-interface SingleCourseProps {
-  course: {
-    id: string;
-    title: string | null;
-    image: string | null;
-    category: string[];
-    description: string;
-    createdAt: Date;
-    enrollmentCount: number;
-  };
-  id: string;
-  videoTitle: string;
-  videoLink: string;
-  duration: number;
-  createdAt: Date;
-  courseId: string;
-  count: number;
-}
+// interface SingleCourseProps {
+//   course: {
+//     id: string;
+//     title: string | null;
+//     image: string | null;
+//     category: string[];
+//     description: string;
+//     createdAt: Date;
+//     enrollmentCount: number;
+//   };
+//   id: string;
+//   videoTitle: string;
+//   videoLink: string;
+//   duration: number;
+//   createdAt: Date;
+//   courseId: string;
+//   count: number;
+// }
 
 const CoursePage = () => {
   const params = useParams();
@@ -78,7 +79,7 @@ const CoursePage = () => {
   };
 
   return (
-    <div className="container pt-20 pb-20">
+    <div className="container p-4 flex flex-col">
       {modalIsOpen && (
         <AddReviewModal setIsModalOpen={setIsModalOpen} courseId={course.id} />
       )}
@@ -99,7 +100,7 @@ const CoursePage = () => {
           <div className="flex flex-col md:flex-row gap-3">
             <div className="w-2/3">
               {subscription?.isSubscribed ? (
-                course?.Lesson?.map((lesson: SingleCourseProps) => (
+                course?.Lesson?.map((lesson: any) => (
                   <div
                     className="flex jutify-between p-5 text-blue-500"
                     key={lesson.id}
@@ -133,24 +134,43 @@ const CoursePage = () => {
             ) : (
               <div className="md:w-1/3 gap-7 w-full">
                 <Card className="w-full">
+                  <Image
+                    width={500}
+                    height={10}
+                    src={course?.image}
+                    alt="course page"
+                  />
                   <div className="flex flex-col gap-4 p-5">
-                    <h1 className="text-lg p-3 font-bold">
-                      Course Title:{" "}
-                      <span className="text-blue-600">{course.title}</span>
+                    <h1 className="text-lg p-3 font-bold text-blue-500">
+                      {course?.title}
                     </h1>
-                    <h1 className="text-lg p-3 font-bold">
-                      Course Lessons:{" "}
-                      <span className="text-blue-600">
-                        {course.Lesson?.length}
-                      </span>
-                    </h1>
-                    <h1 className="text-lg p-3 font-bold">
-                      Course Enrollments:{" "}
-                      <span className="text-blue-600">
-                        {subscription?.subscriptionCount}
-                      </span>
-                    </h1>
-                    <EnrollButton courseId={course.id} />
+                    <div className="flex flex-col">
+                      <h6 className="font-bold p-4">This Course Includes: </h6>
+                      <div className="pl-4">
+                        <p className="flex gap-3 items-center pb-2">
+                          <Tv className="text-xs" />
+                          {course?.hoursNumber} hours on-demand video
+                        </p>
+                        <p className="flex gap-3 items-center pb-2">
+                          <File />
+                          {course?.sectionsNumber} sections
+                        </p>
+                        {course?.hasCoupon ? (
+                          <p className="flex gap-3 items-center pb-2">
+                            <Puzzle />
+                            Has Coupon
+                          </p>
+                        ) : null}
+                        {course?.certificateOnComplete ? (
+                          <p className="flex gap-3 items- pb-2">
+                            <Medal />
+                            Certificate of completion
+                          </p>
+                        ) : null}
+                      </div>
+                    </div>
+
+                    <EnrollButton courseId={course?.id} />
                     <ReviewButton
                       onClick={handleReviewButtonClick}
                       text="Review"
