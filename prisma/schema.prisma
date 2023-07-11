@@ -84,6 +84,7 @@ model Course {
   hasCoupon             Boolean  @default(false)
   sectionsNumber        Int      @default(1)
   downloableResources   Int      @default(0)
+  whatWillBeLearned     String[]
 
   user         User?          @relation(fields: [userId], references: [id], onDelete: Cascade)
   Lesson       Lesson[]

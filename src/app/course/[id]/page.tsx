@@ -1,4 +1,5 @@
 "use client";
+
 import { useState } from "react";
 import ShowMoreText from "react-show-more-text";
 import { useParams } from "next/navigation";
@@ -54,7 +55,6 @@ const CoursePage = () => {
     },
   });
 
-  const [videoUrl, setVideoUrl] = useState<string>("");
   const [modalIsOpen, setIsModalOpen] = useState<boolean>(false);
   const [currentPage, setCurrentPage] = useState<number>(1);
   const lessonsPerPage = 5;

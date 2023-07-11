@@ -16,7 +16,6 @@ const AddToFavButton = ({ text, courseId }: AddToFavButtonProps) => {
   const params = useParams();
   const router = useRouter();
   const { toast } = useToast();
-  const [saved, setSavedCourse] = useState<boolean | null>(null);
   const { mutate: savePost, isLoading: savedLoading } = useMutation({
     mutationFn: async () => {
       const payload: CreateSavedPayload = {
@@ -51,7 +50,9 @@ const AddToFavButton = ({ text, courseId }: AddToFavButtonProps) => {
         description: "You have successfully saved this course.",
         variant: "default",
       });
-      setSavedCourse(true); // Update the savedCourse state immediately
+      startTransition(() => {
+        router.prefetch(`/course/${courseId}`);
+      });
     },
   });
 
@@ -79,7 +80,9 @@ const AddToFavButton = ({ text, courseId }: AddToFavButtonProps) => {
         description: "You have successfully unsaved this course.",
         variant: "default",
       });
-      setSavedCourse(false); // Update the savedCourse state immediately
+      startTransition(() => {
+        router.prefetch(`/course/${courseId}`);
+      });
     },
   });
 
@@ -93,7 +96,7 @@ const AddToFavButton = ({ text, courseId }: AddToFavButtonProps) => {
 
   return (
     <>
-      {saved ? (
+      {savedCourse ? (
         <Button onClick={() => unSavePost()} disabled={unSavePostLoading}>
           Saved
         </Button>
