@@ -9,18 +9,12 @@ import { useParams, useRouter } from "next/navigation";
 interface EnrollButtonProps {
   className?: string;
   courseId: string;
-  isSubscribed: boolean;
 }
 
 //TODO: add the logic for the enroll course and make the lessons appear
 
-const EnrollButton = ({
-  className,
-  courseId,
-  isSubscribed,
-}: EnrollButtonProps) => {
+const EnrollButton = ({ className, courseId }: EnrollButtonProps) => {
   const params = useParams();
-  const { id } = params;
   const router = useRouter();
 
   const { toast } = useToast();
@@ -66,15 +60,15 @@ const EnrollButton = ({
     },
   });
 
-  // const { data: subscription, isLoading: subscriptionLoading } = useQuery({
-  //   queryKey: ["subscribtions"],
-  //   queryFn: async () => {
-  //     const { data } = await axios.get(`/api/subscribtion/${params.id}`);
-  //     return data;
-  //   },
-  // });
+  const { data: subscription, isLoading: subscriptionLoading } = useQuery({
+    queryKey: ["subscribtions"],
+    queryFn: async () => {
+      const { data } = await axios.get(`/api/subscribtion/${params.id}`);
+      return data;
+    },
+  });
 
-  // const isSubscribed = subscription?.isSubscribed;
+  const isSubscribed = subscription?.isSubscribed;
 
   return (
     <>

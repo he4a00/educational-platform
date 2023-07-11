@@ -19,8 +19,6 @@ import { Medal } from "lucide-react";
 const CoursePage = async () => {
   const params = useParams();
   const { id } = params;
-  const [modalIsOpen, setIsModalOpen] = useState<boolean>(false);
-  const [currentPage, setCurrentPage] = useState<number>(1);
 
   const { data: course, isLoading: courseLoading } = useQuery({
     queryKey: ["courses"],
@@ -38,21 +36,15 @@ const CoursePage = async () => {
     },
   });
 
-  const { data: savedCourse } = useQuery({
-    queryKey: ["savedCourses"],
-    queryFn: async () => {
-      const { data } = await axios.get(`/api/saved/${id}`);
-      return data;
-    },
-  });
-
-  const { data: reviews, isLoading: reviewsLoading } = useQuery({
+  const { data: reviews } = useQuery({
     queryKey: ["reviews"],
     queryFn: async () => {
       const { data } = await axios.get(`/api/review/${id}`);
       return data;
     },
   });
+  const [modalIsOpen, setIsModalOpen] = useState<boolean>(false);
+  const [currentPage, setCurrentPage] = useState<number>(1);
 
   const lessonsPerPage = 5;
 
@@ -94,30 +86,26 @@ const CoursePage = async () => {
                 </span>
               </p>
               <div className="flex flex-wrap justify-between flex-col">
-                {displayedLessons ? (
-                  displayedLessons?.map((lesson: any) => (
-                    <div
-                      className="flex flex-col md:flex-row justify-between p-5"
-                      key={lesson?.id}
-                    >
-                      <div className="flex items-center gap-3">
-                        <h6 className="hover:underline text-md font-bold text-blue-700 cursor-pointer">
-                          {lesson?.videoTitle}
-                        </h6>
-                      </div>
-                      <div className="flex gap-6 items-center">
-                        {subscription?.isSubscribed ? (
-                          <Button>Play</Button>
-                        ) : (
-                          <Button className="bg-blue-900">Preview</Button>
-                        )}
-                        <p>05:00</p>
-                      </div>
+                {displayedLessons?.map((lesson: any) => (
+                  <div
+                    className="flex flex-col md:flex-row justify-between p-5"
+                    key={lesson?.id}
+                  >
+                    <div className="flex items-center gap-3">
+                      <h6 className="hover:underline text-md font-bold text-blue-700 cursor-pointer">
+                        {lesson?.videoTitle}
+                      </h6>
                     </div>
-                  ))
-                ) : (
-                  <div>There Is No Lessons</div>
-                )}
+                    <div className="flex gap-6 items-center">
+                      {subscription?.isSubscribed ? (
+                        <Button>Play</Button>
+                      ) : (
+                        <Button className="bg-blue-900">Preview</Button>
+                      )}
+                      <p>05:00</p>
+                    </div>
+                  </div>
+                ))}
 
                 {/* Pagination controls */}
 
@@ -204,10 +192,7 @@ const CoursePage = async () => {
                       </div>
                     </div>
 
-                    <EnrollButton
-                      isSubscribed={subscription?.isSubscribed === true}
-                      courseId={course?.id}
-                    />
+                    <EnrollButton courseId={course?.id} />
                     <ReviewButton
                       onClick={handleReviewButtonClick}
                       text="Review"
