@@ -16,7 +16,7 @@ import Image from "next/image";
 import { File, Puzzle, Tv, User } from "lucide-react";
 import { Medal } from "lucide-react";
 
-const CoursePage = async () => {
+const CoursePage = () => {
   const params = useParams();
   const { id } = params;
 
@@ -43,10 +43,10 @@ const CoursePage = async () => {
       return data;
     },
   });
-  const [modalIsOpen, setIsModalOpen] = useState<boolean>(false);
-  const [currentPage, setCurrentPage] = useState<number>(1);
 
   const lessonsPerPage = 5;
+  const [modalIsOpen, setIsModalOpen] = useState<boolean>(false);
+  const [currentPage, setCurrentPage] = useState<number>(1);
 
   const handleReviewButtonClick = () => {
     setIsModalOpen(true);
