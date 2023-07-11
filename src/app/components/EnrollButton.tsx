@@ -5,16 +5,20 @@ import React, { startTransition } from "react";
 import { CreateSubscribtionPayload } from "../lib/validators/subscribtion";
 import axios, { AxiosError } from "axios";
 import { useParams, useRouter } from "next/navigation";
-import { getAuthSession } from "../lib/auth";
 
 interface EnrollButtonProps {
   className?: string;
   courseId: string;
+  isSubscribed: boolean;
 }
 
 //TODO: add the logic for the enroll course and make the lessons appear
 
-const EnrollButton = ({ className, courseId }: EnrollButtonProps) => {
+const EnrollButton = ({
+  className,
+  courseId,
+  isSubscribed,
+}: EnrollButtonProps) => {
   const params = useParams();
   const { id } = params;
   const router = useRouter();
@@ -62,15 +66,15 @@ const EnrollButton = ({ className, courseId }: EnrollButtonProps) => {
     },
   });
 
-  const { data: subscription, isLoading: subscriptionLoading } = useQuery({
-    queryKey: ["subscribtions"],
-    queryFn: async () => {
-      const { data } = await axios.get(`/api/subscribtion/${params.id}`);
-      return data;
-    },
-  });
+  // const { data: subscription, isLoading: subscriptionLoading } = useQuery({
+  //   queryKey: ["subscribtions"],
+  //   queryFn: async () => {
+  //     const { data } = await axios.get(`/api/subscribtion/${params.id}`);
+  //     return data;
+  //   },
+  // });
 
-  const isSubscribed = subscription?.isSubscribed;
+  // const isSubscribed = subscription?.isSubscribed;
 
   return (
     <>

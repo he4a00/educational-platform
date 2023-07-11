@@ -16,10 +16,13 @@ import AddToFavButton from "@/app/components/AddToFavButton";
 import Image from "next/image";
 import { File, Puzzle, Tv, User } from "lucide-react";
 import { Medal } from "lucide-react";
+import prisma from "@/app/lib/db";
 
-const CoursePage = () => {
+const CoursePage = async () => {
   const params = useParams();
   const { id } = params;
+  const [modalIsOpen, setIsModalOpen] = useState<boolean>(false);
+  const [currentPage, setCurrentPage] = useState<number>(1);
 
   const { data: course, isLoading: courseLoading } = useQuery({
     queryKey: ["courses"],
@@ -37,8 +40,6 @@ const CoursePage = () => {
     },
   });
 
-  console.log(subscription);
-
   const { data: savedCourse } = useQuery({
     queryKey: ["savedCourses"],
     queryFn: async () => {
@@ -55,8 +56,6 @@ const CoursePage = () => {
     },
   });
 
-  const [modalIsOpen, setIsModalOpen] = useState<boolean>(false);
-  const [currentPage, setCurrentPage] = useState<number>(1);
   const lessonsPerPage = 5;
 
   const handleReviewButtonClick = () => {
@@ -202,7 +201,10 @@ const CoursePage = () => {
                       </div>
                     </div>
 
-                    <EnrollButton courseId={course?.id} />
+                    <EnrollButton
+                      isSubscribed={subscription?.isSubscribed === true}
+                      courseId={course?.id}
+                    />
                     <ReviewButton
                       onClick={handleReviewButtonClick}
                       text="Review"
