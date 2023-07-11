@@ -1,5 +1,4 @@
 "use client";
-
 import { useState } from "react";
 import ShowMoreText from "react-show-more-text";
 import { useParams } from "next/navigation";
@@ -16,7 +15,6 @@ import AddToFavButton from "@/app/components/AddToFavButton";
 import Image from "next/image";
 import { File, Puzzle, Tv, User } from "lucide-react";
 import { Medal } from "lucide-react";
-import prisma from "@/app/lib/db";
 
 const CoursePage = async () => {
   const params = useParams();
@@ -96,26 +94,31 @@ const CoursePage = async () => {
                 </span>
               </p>
               <div className="flex flex-wrap justify-between flex-col">
-                {displayedLessons?.map((lesson: any) => (
-                  <div
-                    className="flex flex-col md:flex-row justify-between p-5"
-                    key={lesson?.id}
-                  >
-                    <div className="flex items-center gap-3">
-                      <h6 className="hover:underline text-md font-bold text-blue-700 cursor-pointer">
-                        {lesson?.videoTitle}
-                      </h6>
+                {displayedLessons ? (
+                  displayedLessons?.map((lesson: any) => (
+                    <div
+                      className="flex flex-col md:flex-row justify-between p-5"
+                      key={lesson?.id}
+                    >
+                      <div className="flex items-center gap-3">
+                        <h6 className="hover:underline text-md font-bold text-blue-700 cursor-pointer">
+                          {lesson?.videoTitle}
+                        </h6>
+                      </div>
+                      <div className="flex gap-6 items-center">
+                        {subscription?.isSubscribed ? (
+                          <Button>Play</Button>
+                        ) : (
+                          <Button className="bg-blue-900">Preview</Button>
+                        )}
+                        <p>05:00</p>
+                      </div>
                     </div>
-                    <div className="flex gap-6 items-center">
-                      {subscription?.isSubscribed ? (
-                        <Button>Play</Button>
-                      ) : (
-                        <Button className="bg-blue-900">Preview</Button>
-                      )}
-                      <p>05:00</p>
-                    </div>
-                  </div>
-                ))}
+                  ))
+                ) : (
+                  <div>There Is No Lessons</div>
+                )}
+
                 {/* Pagination controls */}
 
                 {course?.Lesson?.length > lessonsPerPage && (
